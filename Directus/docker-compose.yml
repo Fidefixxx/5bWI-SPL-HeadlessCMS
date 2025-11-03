@@ -1,0 +1,18 @@
+services:
+  directus:
+    image: directus/directus:latest
+    ports:
+      - 8055:8055
+    environment:
+      KEY: "a-random-secret-key"
+      ADMIN_EMAIL: "admin@example.com"
+      ADMIN_PASSWORD: "admin"
+      DB_CLIENT: "sqlite3"
+      DB_FILENAME: "/data/data.db"
+      CORS_ENABLED: "true"
+      CORS_ORIGIN: "http://localhost:5173"
+    volumes:
+      - ./data:/data
+
+volumes:
+  directus_data:

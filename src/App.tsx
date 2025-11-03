@@ -3,7 +3,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import Card from "./compoments/Card";
-
+import ReactMarkdown from "react-markdown";
 type Address = {
   id: number;
   street: string;
@@ -19,27 +19,20 @@ type Address = {
 
 type Person = {
   id: number;
-  firstname: string;
-  lastname: string;
-  email: string;
-  phone: string;
-  birthday: string; // could also use Date if parsed
-  gender: "male" | "female" | "other";
-  address: Address;
-  website: string;
-  image: string;
+  First_Name: string;
+  Last_Name: string;
+  Info: string;
+  Image: string;
 };
 
 function App() {
   const [data, setData] = useState<Person | undefined>();
   async function fetchData() {
-    const apiRes = await fetch(
-      "https://fakerapi.it/api/v2/persons?_quantity=20"
-    );
+    const apiRes = await fetch("http://localhost:8055/items/People");
     const json = await apiRes.json();
     const newData = json.data.map((person: Person) => ({
       ...person,
-      image: `https://picsum.photos/id/${person.id}/300`,
+      Image: `http://localhost:8055/assets/${person.Image}`,
     }));
     setData(newData);
     console.log(newData);
@@ -49,9 +42,9 @@ function App() {
   }, []);
 
   return (
-    <>
-      <div className="bg-gray-700">
-        <div className="flex justify-end text-4xl font-bold text-white mb-5 pt-2">
+    <div className=" h-screen bg-gray-700">
+      <div className="bg-gray-700 font-mono">
+        <div className="flex justify-end text-4xl font-bold text-white mb-5 pt-2 pr-2">
           Htl Dornbirn
         </div>
         {Array.isArray(data) && data.length > 0 && (
@@ -64,7 +57,7 @@ function App() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
 
