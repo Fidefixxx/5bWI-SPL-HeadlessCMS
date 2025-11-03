@@ -1,43 +1,17 @@
 import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import Card from "./compoments/Card";
-import ReactMarkdown from "react-markdown";
-type Address = {
-  id: number;
-  street: string;
-  streetName: string;
-  buildingNumber: string;
-  city: string;
-  zipcode: string;
-  country: string;
-  country_code: string;
-  latitude: number;
-  longitude: number;
-};
-
-type Person = {
-  id: number;
-  First_Name: string;
-  Last_Name: string;
-  Info: string;
-  Image: string;
-};
-
+import DirectusAPI from "./compoments/DirectusAPI";
+import type { Person } from "./compoments/Person";
 function App() {
-  const [data, setData] = useState<Person | undefined>();
-  async function fetchData() {
-    const apiRes = await fetch("http://localhost:8055/items/People");
-    const json = await apiRes.json();
-    const newData = json.data.map((person: Person) => ({
-      ...person,
-      Image: `http://localhost:8055/assets/${person.Image}`,
-    }));
-    setData(newData);
-    console.log(newData);
-  }
+  const [data, setData] = useState<Person[]>([]);
+
   useEffect(() => {
+    async function fetchData() {
+      const api = new DirectusAPI();
+      const data = (await api.fetchData()) as Person[];
+      setData(data);
+    }
     fetchData();
   }, []);
 
